@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriYukt - Resetting Password...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #F4F6F8;
+            margin: 0;
+            color: #333;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2E7D32; /* AgriYukt Green */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // 1. Supabase puts the secret reset token in the URL "hash" (everything after the #)
+            var hash = window.location.hash;
+            
+            if (hash && hash.includes("type=recovery")) {
+                // 2. We instantly redirect to your Android app's deep link, passing the token!
+                window.location.replace("agriyukt://reset-callback" + hash);
+                
+                // 3. Fallback message just in case the app doesn't open immediately
+                setTimeout(function() {
+                    document.getElementById("message").innerText = "If the AgriYukt app does not open automatically, please ensure it is installed.";
+                }, 2000);
+            } else {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("message").innerText = "Invalid or expired reset link.";
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="loader" id="loader"></div>
+    <h3 id="message">Opening AgriYukt App...</h3>
+</body>
+</html>
